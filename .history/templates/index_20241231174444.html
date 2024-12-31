@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Employees Burnout Prediction</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+    />
+    <style>
+      body {
+        background: linear-gradient(135deg, #f3f4f6, #e4eff5);
+        font-family: Arial, sans-serif;
+      }
+      .navbar {
+        background-color: #4e73df;
+        padding: 5px 10px;
+      }
+      .navbar-brand {
+        font-size: 18px;
+        color: #fff !important;
+      }
+      .container {
+        max-width: 450px;
+        background: #fff;
+        padding: 10px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin: 10px auto 10px;
+      }
+      h3 {
+        color: #4e73df;
+        font-weight: bold;
+        font-size: 20px;
+        text-align: center;
+        margin-bottom: 10px;
+      }
+      .btn-primary {
+        background-color: #4e73df;
+        border-color: #4e73df;
+      }
+      .alert {
+        font-size: 14px;
+        padding: 5px;
+        text-align: center;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Burnout Predictor</a>
+      </div>
+    </nav>
+
+    <div class="container">
+      <h3>Employees Burnout Prediction</h3>
+      <form action="/" method="post" class="p-1">
+        <div class="mb-2">
+          <label for="designation" class="form-label">Designation:</label>
+          <input
+            type="number"
+            class="form-control"
+            id="designation"
+            name="designation"
+            placeholder="Enter designation level"
+            value="{{ designation }}"
+            step="1"
+            required
+          />
+        </div>
+        <div class="mb-2">
+          <label for="resource_allocation" class="form-label">Resource Allocation:</label>
+          <input
+            type="number"
+            class="form-control"
+            id="resource_allocation"
+            name="resource_allocation"
+            placeholder="Enter resource allocation score"
+            value="{{ resource_allocation }}"
+            step="1"
+            required
+          />
+        </div>
+        <div class="mb-2">
+          <label for="mental_fatigue_score" class="form-label">Mental Fatigue Score:</label>
+          <input
+            type="number"
+            class="form-control"
+            id="mental_fatigue_score"
+            name="mental_fatigue_score"
+            placeholder="Enter mental fatigue score"
+            value="{{ mental_fatigue_score }}"
+            step="0.01"
+            required
+          />
+        </div>
+        <div class="mb-2">
+          <label for="company_type" class="form-label">Company Type:</label>
+          <select class="form-select" id="company_type" name="company_type">
+            <option value="Service" {% if company_type == "Service" %} selected {% endif %}>Service</option>
+            <option value="Product" {% if company_type == "Product" %} selected {% endif %}>Product</option>
+          </select>
+        </div>
+        <div class="mb-2">
+          <label for="wfh_setup_available" class="form-label">WFH Setup Available:</label>
+          <select
+            class="form-select"
+            id="wfh_setup_available"
+            name="wfh_setup_available"
+          >
+            <option value="Yes" {% if wfh_setup_available == "Yes" %} selected {% endif %}>Yes</option>
+            <option value="No" {% if wfh_setup_available == "No" %} selected {% endif %}>No</option>
+          </select>
+        </div>
+        <div class="mb-2">
+          <label for="gender" class="form-label">Gender:</label>
+          <select class="form-select" id="gender" name="gender">
+            <option value="Male" {% if gender == "Male" %} selected {% endif %}>Male</option>
+            <option value="Female" {% if gender == "Female" %} selected {% endif %}>Female</option>
+          </select>
+        </div>
+        <div class="d-grid">
+          <button type="submit" class="btn btn-primary">Predict</button>
+        </div>
+      </form>
+
+      {% if prediction is not none %}
+      <div
+        class="alert {% if prediction < 0.04 %} alert-success {% elif prediction < 0.07 %} alert-warning {% else %} alert-danger {% endif %}"
+      >
+        <h4>Burnout Rate: {{ prediction }}</h4>
+        <p>
+          {% if prediction < 0.40 %} Low Burnout Risk
+          {% elif prediction < 0.70 %} Moderate Burnout Risk
+          {% else %} High Burnout Risk {% endif %}
+        </p>
+      </div>
+      {% endif %}
+    </div>
+  </body>
+</html>
